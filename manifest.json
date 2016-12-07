@@ -1,0 +1,6 @@
+{
+  "name": "dve-www",
+  "short_name": "dve-www",
+  "start_url": "/",
+  "display": "standalone"
+}
