@@ -1,4 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+
 <link rel="import" href="./dve-sizeview.html">
 
 <dom-module id="dve-navbar">
@@ -9,14 +11,14 @@
       :host {
         display: block;
         box-sizing: border-box;
-        width: 100%;    
+        width: 100%;
       }
 
       iron-selector {
         width: 100%;
         @apply(--layout-horizontal);
         @apply(--layout-center);
-        @apply(--layout-end-justified);        
+        @apply(--layout-end-justified);
       }
 
       .nav {
@@ -30,20 +32,20 @@
 
 
       .nav p {
-        margin:0px 8px 0px 8px;   
+        margin:0px 8px 0px 8px;
         font-size: 14px;
-        @apply(--montserrat-semibold); 
-        opacity: 0.7;          
+        @apply(--montserrat-semibold);
+        opacity: 0.7;
       }
 
       .nav p:hover {
-        opacity: 1;   
-        cursor: pointer;       
+        opacity: 1;
+        cursor: pointer;
       }
 
       .inlogger {
-        margin:0px 0px 0px 15px;   
-        height: 35px; 
+        margin:0px 0px 0px 15px;
+        height: 35px;
         width:  35px;
         border-radius: 50%;
       }
@@ -51,7 +53,7 @@
 
     </style>
         <div class$="nav {{navbg}} {{navtxtcolor}}">
-        <iron-selector attr-for-selected="name" selected="{{navselected}}">
+        <iron-selector attr-for-selected="name" on-iron-select="_navselected" selected="{{navselected}}">
             <div name="token"><p>the token</p></div>
             <div name="apps"><p>the apps</p></div>
             <div name="swarm"><p>the swarm</p></div>
@@ -86,7 +88,7 @@
       _sizeview: function() {
         switch (this.sizeview) {
           case 'phone':
-            console.log(this.sizeview); 
+            console.log(this.sizeview);
             // this.customStyle[''] = '';
             // this.updateStyles();
             break;
@@ -106,7 +108,9 @@
       },
 
       _navselected: function(){
-        console.log("this is navbar",this.navselected);
+        // console.log("this is navbar",this.navselected);
+        this.fire('nav-changed', {route: this.navselected});
+        //this.set('route.path', '/'+this.navselected);
       }
 
     });
