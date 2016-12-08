@@ -1,0 +1,114 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./dve-sizeview.html">
+
+<dom-module id="dve-navbar">
+<link rel="import" href="../bower_components/dve-style/dve-style.css" type="css">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;    
+      }
+
+      iron-selector {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-end-justified);        
+      }
+
+      .nav {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-end-justified);
+        box-sizing: border-box;
+        padding: 10px 20px 10px 20px;               
+      }
+
+
+      .nav p {
+        margin:0px 8px 0px 8px;   
+        font-size: 14px;
+        @apply(--montserrat-semibold); 
+        opacity: 0.7;          
+      }
+
+      .nav p:hover {
+        opacity: 1;   
+        cursor: pointer;       
+      }
+
+      .inlogger {
+        margin:0px 0px 0px 15px;   
+        height: 35px; 
+        width:  35px;
+        border-radius: 50%;
+      }
+
+
+    </style>
+        <div class$="nav {{navbg}} {{navtxtcolor}}">
+        <iron-selector attr-for-selected="name" selected="{{navselected}}">
+            <div name="token"><p>the token</p></div>
+            <div name="apps"><p>the apps</p></div>
+            <div name="swarm"><p>the swarm</p></div>
+        </iron-selector>
+          <div class="inlogger darker"></div>
+        </div>
+    <dve-sizeview sizeview="{{sizeview}}"></dve-sizeview>
+
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'dve-navbar',
+
+      properties: {
+        sizeview: {
+          type: String,
+          observer: '_sizeview'
+        },
+        navbg: {
+          type: String
+        },
+        navselected: {
+          type: String,
+          value: 'token',
+          observer: '_navselected'
+        }
+      },
+
+      _sizeview: function() {
+        switch (this.sizeview) {
+          case 'phone':
+            console.log(this.sizeview); 
+            // this.customStyle[''] = '';
+            // this.updateStyles();
+            break;
+          case 'desktop':
+            console.log(this.sizeview);
+            // this.customStyle[''] = '';
+            // this.updateStyles();
+            break;
+          case 'xlarge':
+            console.log(this.sizeview);
+            // this.customStyle[''] = '';
+            // this.updateStyles();
+            break;
+          default:
+            console.log("!!! ** Niks");
+        }
+      },
+
+      _navselected: function(){
+        console.log("this is navbar",this.navselected);
+      }
+
+    });
+  </script>
+</dom-module>

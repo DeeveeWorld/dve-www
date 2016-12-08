@@ -1,0 +1,104 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./dve-sizeview.html">
+<link rel="import" href="./dve-navbar.html">
+
+<dom-module id="dve-www-swarm">
+<link rel="import" href="../bower_components/dve-style/dve-style.css" type="css">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;    
+      }
+
+      .totalcanvas {
+        width: 100%;
+        min-height: 100vh;
+      }
+
+
+      .nav {
+        width: 100%;
+        height: 5vh;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-end-justified);
+        box-sizing: border-box;
+        padding: 0px 0px 0px 0px;               
+      }
+
+
+      .nav p {
+        margin:0px 8px 0px 8px;   
+        font-size: 14px;
+        @apply(--montserrat-semibold); 
+        opacity: 0.7;          
+      }
+
+      .nav p:hover {
+        opacity: 1;   
+        cursor: pointer;       
+      }
+
+      .inlogger {
+        margin:0px 0px 0px 15px;   
+        height: 5vh; 
+        width:  5vh;
+        border-radius: 50%;
+      }
+
+
+    </style>
+    <div class="totalcanvas grey4back_grey1">
+    <dve-navbar></dve-navbar>
+
+    <dve-sizeview sizeview="{{sizeview}}"></dve-sizeview>
+      <h1>Welcome Swarm</h1>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'dve-www-swarm',
+
+      properties: {
+        sizeview: {
+          type: String,
+          observer: '_sizeview'
+        },
+      },
+
+      _sizeview: function() {
+        switch (this.sizeview) {
+          case 'phone':
+            console.log(this.sizeview); 
+            // this.customStyle[''] = '';
+            // this.updateStyles();
+            break;
+          case 'desktop':
+            console.log(this.sizeview);
+            // this.customStyle[''] = '';
+            // this.updateStyles();
+            break;
+          case 'xlarge':
+            console.log(this.sizeview);
+            // this.customStyle[''] = '';
+            // this.updateStyles();
+            break;
+          default:
+            console.log("!!! ** Niks");
+        }
+      },
+
+      Fire: function(){
+        this.fire('fire');
+        console.log('fired!!');
+      }
+
+    });
+  </script>
+</dom-module>

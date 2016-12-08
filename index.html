@@ -12,7 +12,18 @@
 
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
-    <link rel="import" href="/src/dve-www-app/dve-www-app.html">
+    <link rel="import" href="/src/dve-www-app.html">
+    <link rel="import" href="/bower_components/dve-style/dve-style.html">
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+        min-height: 100vh;
+      }
+      ::-webkit-scrollbar {
+          display: none;
+      }
+    </style>
   </head>
   <body>
     <dve-www-app></dve-www-app>
