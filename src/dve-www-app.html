@@ -1,165 +1,270 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 
 <link rel="import" href="./dve-sizeview.html">
 <link rel="import" href="./dve-www-home.html">
 <link rel="import" href="./dve-www-swarm.html">
 
 <dom-module id="dve-www-app">
-<link rel="import" href="../bower_components/dve-style/dve-style.css" type="css">
+  <link rel="import" href="../bower_components/dve-style/dve-style.css" type="css">
 
   <template>
-    <style>
-      :host {
-        display: block;
-      }
+  <style>
+  :host {
+    display: block;
+  }
 
 
-/*      .total {
-        width:100vw;
-        height: 94vh;
-      }*/
+  /*      .total {
+  width:100vw;
+  height: 94vh;
+  }*/
 
-      dve-navbar {
-        height: 6vh;
-      }
+  dve-navbar {
+    height: 6vh;
+  }
 
 
-      neon-animated-pages {
-        width: 100vw;
-        height: 94vh;
-      }
+  neon-animated-pages {
+    width: 100vw;
+    height: 94vh;
+  }
 
-/*      .logo {
-        width: 100%;
-        height: 50vh;
-        @apply(--layout-vertical);
-        @apply(--layout-start);
-        @apply(--layout-center-justified);
-        box-sizing: border-box;
-        padding: 0px 10vw 0px 10vw;        
-      }
 
-      .logo h1 {
-        font-size: 66px;
-        line-height: 47px;
-        @apply(--montserrat-bold);
-        text-align: right;
-      }
+  iron-selector {
+    width: 100%;
+    @apply(--layout-horizontal);
+    @apply(--layout-center);
+    @apply(--layout-end-justified);
+  }
+
+  .nav {
+    width: 100%;
+    @apply(--layout-horizontal);
+    @apply(--layout-center);
+    @apply(--layout-end-justified);
+    box-sizing: border-box;
+    padding: 10px 20px 10px 20px;
+  }
+
+
+  .nav p {
+    margin:0px 8px 0px 8px;
+    font-size: 14px;
+    @apply(--montserrat-semibold);
+    opacity: 0.7;
+  }
+
+  .nav p:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .inlogger {
+    margin:0px 0px 0px 15px;
+    height: 35px;
+    width:  35px;
+    border-radius: 50%;
+  }
+
+
+  /*      .logo {
+  width: 100%;
+  height: 50vh;
+  @apply(--layout-vertical);
+  @apply(--layout-start);
+  @apply(--layout-center-justified);
+  box-sizing: border-box;
+  padding: 0px 10vw 0px 10vw;
+}
+
+.logo h1 {
+font-size: 66px;
+line-height: 47px;
+@apply(--montserrat-bold);
+text-align: right;
+}
 */
 
-    </style>
-    <dve-sizeview sizeview="{{sizeview}}"></dve-sizeview>
-    <dve-navbar navtxtcolor="{{navtxtcolor}}" navbg="{{navbg}}" navselected="{{navselected}}"></dve-navbar>
+</style>
 
-   <neon-animated-pages
-    selected="{{selected}}" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
-    <dve-www-home></dve-www-home>
-    <dve-www-swarm></dve-www-swarm>
+<!-- app-location binds with the URL and produces a route for
+app-route elements to consume. Since this demo needs to run without
+server cooperation (e.g. with polyserve, in the elements catalog, etc) we'll
+use the hash portion of the URL for our route paths. -->
+<app-location route="{{route}}" use-hash-as-path></app-location>
 
-    <neon-animatable>
-      <h1>Hou het op! 1</h1>
-    </neon-animatable>
-    <neon-animatable>
-      <h1>Hou het op! 2</h1>
-    </neon-animatable>
-  </neon-animated-pages>
+<!-- app-routes parse route paths based on the their `pattern`.
+Parameters are extracted into the `data` object. The rest of the path that
+comes after the `pattern` is put into the `tail` object, which can be
+passed to the `route` property of downstream app-routes. -->
+<app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
+<!--     <app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>
+-->
 
-  </template>
+<dve-sizeview sizeview="{{sizeview}}"></dve-sizeview>
 
-  <script>
-    Polymer({
+<div class$="nav {{navbg}} {{navtxtcolor}}">
+  <iron-selector attr-for-selected="name" on-iron-select="_navselected" selected="{{navselected}}">
+    <div name="token"><p>the token</p></div>
+    <div name="apps"><p>the apps</p></div>
+    <div name="swarm"><p>the swarm</p></div>
+  </iron-selector>
+  <div class="inlogger darker"></div>
+</div>
 
-      is: 'dve-www-app',
+<neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
-      properties: {
-        sizeview: {
-          type: String,
-          observer: '_sizeview'
-        },
-        navtxtcolor: {
-          type: String,
-          value: 'white'
-        },
-        navbg: {
-          type: String
-        },
-        selected: {
-          type: Number,
-          value: 0,
-          observer: '_selected'
-        },
-        entryAnimation: {
-          type: String,
-          value: 'fade-in-animation'
-        },
-        exitAnimation: {
-          type: String,
-          value: 'fade-out-animation'
-        },
-        navselected: {
-          type: String
-        }
-      },
+  <dve-www-home data-page="home"></dve-www-home>
+  <dve-www-swarm data-page="swarm"></dve-www-swarm>
 
-      _sizeview: function() {
-        switch (this.sizeview) {
-          case 'phone':
-            console.log(this.sizeview); 
-            // this.customStyle[''] = '';
-            // this.updateStyles();
-            break;
-          case 'desktop':
-            console.log(this.sizeview);
-            // this.customStyle[''] = '';
-            // this.updateStyles();
-            break;
-          case 'xlarge':
-            console.log(this.sizeview);
-            // this.customStyle[''] = '';
-            // this.updateStyles();
-            break;
-          default:
-            console.log("!!! ** Niks");
-        }
-      },
+  <neon-animatable data-page="token">
+    <h1>TOKEN</h1>
+  </neon-animatable>
+  <neon-animatable data-page="apps">
+    <h1>APPS</h1>
+  </neon-animatable>
+</neon-animated-pages>
+
+</template>
+
+<script>
+Polymer({
+
+  is: 'dve-www-app',
+
+  properties: {
+    sizeview: {
+      type: String,
+      observer: '_sizeview'
+    },
+    navtxtcolor: {
+      type: String,
+      value: 'white'
+    },
+    navbg: {
+      type: String
+    },
+    selected: {
+      type: Number,
+      value: 0,
+      observer: '_selected'
+    },
+    entryAnimation: {
+      type: String,
+      value: 'fade-in-animation'
+    },
+    exitAnimation: {
+      type: String,
+      value: 'fade-out-animation'
+    },
+    navselected: {
+      type: String
+    }
+  },
+
+  observers: [
+    '_routeChanged(route.*)',
+    '_viewChanged(data.page)'
+  ],
+
+  _routeChanged: function(changeRecord) {
+    if (changeRecord.path === 'path') {
+      console.log('Path changed!');
+    }
+  },
+
+  _viewChanged: function(view) {
+    // load data for view
+    console.log('View changed!', view);
+
+    switch (view) {
+      case 'apps':
+      this.navtxtcolor = "white";
+      this.navbg = "blueback";
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      case 'swarm':
+      this.navtxtcolor = "white";
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      case 'token':
+      console.log(this.sizeview);
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      default:
+      console.log("!!! ** Niks");
+    }
+
+  },
+
+  _sizeview: function() {
+    switch (this.sizeview) {
+      case 'phone':
+      console.log(this.sizeview);
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      case 'desktop':
+      console.log(this.sizeview);
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      case 'xlarge':
+      console.log(this.sizeview);
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      default:
+      console.log("!!! ** Niks");
+    }
+  },
+
+  _navselected: function(){
+    this.set('route.path', '/'+this.navselected);
+  },
 
 
-      _selected: function() {
-        switch (this.selected) {
-          case 0:
-            this.navtxtcolor = "white";
-            this.navbg = "blueback";
-            // this.customStyle[''] = '';
-            // this.updateStyles();
-            break;
-          case 1:
-            this.navtxtcolor = "white";
-            // this.customStyle[''] = '';
-            // this.updateStyles();
-            break;
-          case 2:
-            console.log(this.sizeview);
-            // this.customStyle[''] = '';
-            // this.updateStyles();
-            break;
-          default:
-            console.log("!!! ** Niks");
-        }
-      },
+  _selected: function() {
+    switch (this.selected) {
+      case 0:
+      this.navtxtcolor = "white";
+      this.navbg = "blueback";
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      case 1:
+      this.navtxtcolor = "white";
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      case 2:
+      console.log(this.sizeview);
+      // this.customStyle[''] = '';
+      // this.updateStyles();
+      break;
+      default:
+      console.log("!!! ** Niks");
+    }
+  },
 
-      next: function(){
-        this.selected ++;
-            console.log(this.selected);
+  next: function(){
+    this.selected ++;
+    console.log(this.selected);
 
-      },
-      prev: function(){
-        this.selected --;
-            console.log(this.selected);
+  },
 
-      }
+  prev: function(){
+    this.selected --;
+    console.log(this.selected);
+  }
 
-    });
-  </script>
+});
+</script>
 </dom-module>

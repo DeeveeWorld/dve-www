@@ -4,7 +4,9 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "iron-media-query": "^1.0.8",
-    "neon-animation": "^1.2.4"
+    "neon-animation": "^1.2.4",
+    "app-route": "https://github.com/PolymerElements/app-route.git#^0.9.3",
+    "dve-style": "https://github.com/DeeveeWorld/dve-style.git"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
