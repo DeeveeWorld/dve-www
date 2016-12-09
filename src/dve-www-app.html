@@ -23,9 +23,7 @@
   height: 94vh;
   }*/
 
-  dve-navbar {
-    height: 6vh;
-  }
+
 
 
   neon-animated-pages {
@@ -36,6 +34,7 @@
 
   iron-selector {
     width: 100%;
+    height: 100%;
     @apply(--layout-horizontal);
     @apply(--layout-center);
     @apply(--layout-end-justified);
@@ -47,12 +46,17 @@
     @apply(--layout-center);
     @apply(--layout-end-justified);
     box-sizing: border-box;
-    padding: 10px 20px 10px 20px;
+    padding: 28px;
+      transition: all 0.3s linear;
+    color: var(--nav-color);
+    background-color: transparent;
+    position: fixed;
+    z-index: 9;
   }
 
 
   .nav p {
-    margin:0px 8px 0px 8px;
+    margin:0px 8px 4px 8px;
     font-size: 14px;
     @apply(--montserrat-semibold);
     opacity: 0.7;
@@ -67,27 +71,31 @@
     margin:0px 0px 0px 15px;
     height: 35px;
     width:  35px;
+    min-height: 35px;
+    min-width:  35px;
     border-radius: 50%;
   }
 
 
-  /*      .logo {
-  width: 100%;
+        .logosmall {
+/*  width: 100%;
   height: 50vh;
   @apply(--layout-vertical);
   @apply(--layout-start);
   @apply(--layout-center-justified);
   box-sizing: border-box;
-  padding: 0px 10vw 0px 10vw;
+  padding: 0px 10vw 0px 10vw;*/
 }
 
-.logo h1 {
-font-size: 66px;
-line-height: 47px;
+.logosmall p {
+    opacity: 1;
+
+font-size: 30px;
+line-height: 30px;
 @apply(--montserrat-bold);
-text-align: right;
-}
-*/
+/*text-align: right;
+*/}
+
 
 </style>
 
@@ -108,11 +116,26 @@ passed to the `route` property of downstream app-routes. -->
 <dve-sizeview sizeview="{{sizeview}}"></dve-sizeview>
 
 <div class$="nav {{navbg}} {{navtxtcolor}}">
-  <iron-selector attr-for-selected="name" on-iron-select="_navselected" selected="{{navselected}}">
-    <div name="token"><p>the token</p></div>
-    <div name="apps"><p>the apps</p></div>
-    <div name="swarm"><p>the swarm</p></div>
-  </iron-selector>
+
+  <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
+    <iron-selector attr-for-selected="name" on-iron-select="_navselected" selected="{{navselected}}">
+      <template is="dom-if" if="{{!werehome}}">
+        <div name="home" class="logosmall">
+        <p>deevee</p>
+        </div>
+        <div class="flex"></div>
+      </template>
+      <div name="token"><p>the token</p></div>
+      <div name="apps"><p>the apps</p></div>
+      <div name="swarm"><p>the swarm</p></div>
+    </iron-selector>
+  </template>
+
+  <template is="dom-if" if="{{_is(sizeview,'phone')}}">
+    <p>.</p>
+    <div class="flex"></div>
+  </template>
+
   <div class="inlogger darker"></div>
 </div>
 
@@ -163,6 +186,10 @@ Polymer({
     },
     navselected: {
       type: String
+    },
+    werehome: {
+      type: Boolean,
+      value: false
     }
   },
 
@@ -182,19 +209,19 @@ Polymer({
     console.log('View changed!', view);
 
     switch (view) {
-      case 'apps':
-      this.navtxtcolor = "white";
-      this.navbg = "blueback";
-      // this.customStyle[''] = '';
-      // this.updateStyles();
+      case 'home':
+        this.customStyle['--nav-color'] = 'var(--dve-white)';
+        this.customStyle['--nav-bg'] = 'var(--dve-blue)';
+        this.updateStyles();
+        this.werehome = true;
       break;
       case 'swarm':
-      this.navtxtcolor = "white";
-      // this.customStyle[''] = '';
-      // this.updateStyles();
+        this.customStyle['--nav-color'] = 'var(--dve-grey4)';
+        this.customStyle['--nav-bg'] = 'var(--dve-grey1)';
+        this.werehome = false;
+      this.updateStyles();
       break;
       case 'token':
-      console.log(this.sizeview);
       // this.customStyle[''] = '';
       // this.updateStyles();
       break;
@@ -230,40 +257,13 @@ Polymer({
     this.set('route.path', '/'+this.navselected);
   },
 
-
-  _selected: function() {
-    switch (this.selected) {
-      case 0:
-      this.navtxtcolor = "white";
-      this.navbg = "blueback";
-      // this.customStyle[''] = '';
-      // this.updateStyles();
-      break;
-      case 1:
-      this.navtxtcolor = "white";
-      // this.customStyle[''] = '';
-      // this.updateStyles();
-      break;
-      case 2:
-      console.log(this.sizeview);
-      // this.customStyle[''] = '';
-      // this.updateStyles();
-      break;
-      default:
-      console.log("!!! ** Niks");
+  _is: function(a, b) {
+    if (b === undefined){
+      b = true;
     }
+    return a === b;
   },
 
-  next: function(){
-    this.selected ++;
-    console.log(this.selected);
-
-  },
-
-  prev: function(){
-    this.selected --;
-    console.log(this.selected);
-  }
 
 });
 </script>
